@@ -33,7 +33,7 @@ sample.value="none";
 sample.setAttribute("disabled",true);
 document.getElementById("shape").value="rect";
 document.getElementById("shape").setAttribute("disabled",true);
-layout([1.2, 175.8, 65.9, 53.9]);
+layout([1.2, 107.6, 83.8, 36.7]);
 }
 
 function display_Q1() {
@@ -46,7 +46,7 @@ sample.value="none";
 sample.setAttribute("disabled",true);
 document.getElementById("shape").value="rect";
 document.getElementById("shape").setAttribute("disabled",true);
-layout([1.8, 127.7, 61.1, 50.2]);
+layout([2.6, 130.0, 79.8, 84.2]);
 }
 
 function display_Q2() {
@@ -59,7 +59,7 @@ sample.value="width";
 sample.removeAttribute("disabled");
 document.getElementById("shape").value="rect";
 document.getElementById("shape").setAttribute("disabled",true);
-layout([-4.7, 182.5, 63.9, 84.9]);
+layout([-0.3, 108.1, 97.8, 47.2]);
 }
 
 function display_Q3() {
@@ -72,7 +72,7 @@ sample.value="width";
 sample.removeAttribute("disabled");
 document.getElementById("shape").value="oval";
 document.getElementById("shape").setAttribute("disabled",true);
-layout([3.3, 132.9, 74.0, 59.2]);
+layout([-4.1, 154.7, 37.5, 30.6]);
 }
 
 drawAll({L: 60, R: 60},{w: 0, h: 0}, 0);
@@ -137,10 +137,32 @@ function layout(iValues) {
   }
  }
 
+ cnvs.ontouchstart = function(e) {
+  e.preventDefault();
+  var bbox = cnvs.getBoundingClientRect();
+  var pxX=e.touches[0].clientX-bbox.left*(cw/bbox.width);
+  var pxY=e.touches[0].clientY-bbox.top*(ch/bbox.height);
+  
+  if (document.getElementById("meter").value == "able") {
+   if (35 < pxY && pxY < 125) {
+    dragging=true;
+    mouseX=pxX;
+    mouseY=pxY;
+   }
+  }
+ }
+
+
  cnvs.onmouseup = function(e) {
   e.preventDefault();
   dragging=false;
  }
+
+ cnvs.ontouchend = function(e) {
+  e.preventDefault();
+  dragging=false;
+ }
+
 
  cnvs.onmousemove = function(e) {
   e.preventDefault();
@@ -158,6 +180,25 @@ function layout(iValues) {
    //ctx.fillText(faceL+", "+faceR, 200,600);
   }
  }
+
+ cnvs.ontouchmove = function(e) {
+  e.preventDefault();
+  var bbox = cnvs.getBoundingClientRect();
+  var pxX=e.touches[0].clientX-bbox.left*(cw/bbox.width);
+  var pxY=e.touches[0].clientY-bbox.top*(ch/bbox.height);
+
+  if (dragging == true && 35 < pxY && pxY < 125 && faces.R+390 < pxX && pxX < faces.R+510 && faces.L+sample.w<=faces.R+(pxY-mouseY)/10) {
+   faces = drawAll(faces, sample, pxY-mouseY);
+   mouseY = pxY;
+   //ctx.fillStyle="black";
+   //ctx.font="normal 40px Palatino Linotype";
+   //ctx.textAlign="center";
+   //ctx.clearRect(0,530,600,620);
+   //ctx.fillText(faceL+", "+faceR, 200,600);
+  }
+ }
+
+
  
  faces = drawAll(faces, sample, 0);
 
