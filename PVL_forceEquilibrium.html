@@ -24,12 +24,12 @@ var f1 = document.getElementById("F1");
 f1.setAttribute("value",10);
 f1.setAttribute("disabled",true);
 var f2 = document.getElementById("F2");
-f2.setAttribute("value",12);
+f2.setAttribute("value",16);
 f2.setAttribute("disabled",true);
 var f3 = document.getElementById("F3");
-f3.setAttribute("value",13);
+f3.setAttribute("value",19);
 f3.removeAttribute("disabled");
-angles=[144, 260, 349];
+angles=[0, 85, 222];
 shapes=[];
 shapes.push( {x:300, y:300, radius:0, color:'red', move:false} );
 shapes.push( {x:0, y:300, radius:0, color:'green', move:false} );
@@ -46,9 +46,9 @@ var f2 = document.getElementById("F2");
 f2.setAttribute("value",16);
 f2.setAttribute("disabled", true);
 var f3 = document.getElementById("F3");
-f3.setAttribute("value",18);
+f3.setAttribute("value",17);
 f3.setAttribute("disabled", true);
-angles=[122, 258, 334];
+angles=[57, 185, 307];
 shapes=[];
 shapes.push( {x:0, y:0, radius:0, color:'red', move:true} );
 shapes.push( {x:0, y:0, radius:0, color:'green', move:false} );
@@ -59,15 +59,15 @@ layout(angles, shapes);
 function display_Q2() {
 q.innerHTML = '<font size="3px"> <p style="background-color: #eee;">3. Find the correct forces of <font color="red">red</font> and <font color="blue">blue</font> weights to balance the three weights fixed at their angles. The net force must be zero in 2 decimal point places. </p>';
 var f1 = document.getElementById("F1");
-f1.setAttribute("value",12);
+f1.setAttribute("value",11);
 f1.removeAttribute("disabled");
 var f2 = document.getElementById("F2");
 f2.setAttribute("value",14);
 f2.setAttribute("disabled",true);
 var f3 = document.getElementById("F3");
-f3.setAttribute("value",19);
+f3.setAttribute("value",15);
 f3.removeAttribute("disabled");
-angles=[55, 179, 301];
+angles=[142, 219, 352];
 shapes=[];
 shapes.push( {x:0, y:0, radius:0, color:'red', move:false} );
 shapes.push( {x:0, y:0, radius:0, color:'green', move:false} );
@@ -115,7 +115,6 @@ function layout(angles, shapes) {
  var F3=document.getElementById("F3").value;
 
  forces=[F1, F2, F3];
- var shape;
 
  for(let i=0;i<shapes.length;i++) {
   shape=shapes[i];
@@ -157,9 +156,10 @@ function layout(angles, shapes) {
   var pxX=e.clientX-bbox.left*(cw/bbox.width);
   var pxY=e.clientY-bbox.top*(ch/bbox.height);
 
+  var shape;
   for (let i=0; i<3; i++) {
    shape=shapes[i];
-   if ((shape.x-pxX)**2+(shape.y-pxY)**2<=shape.radius**2) {
+   if ((shape.x-pxX)**2+(shape.y-pxY)**2<=shape.radius**2 && shape.move==true) {
     mouseX=pxX;
     mouseY=pxY;
     dragging=true;
@@ -174,9 +174,10 @@ function layout(angles, shapes) {
   var pxX=e.touches[0].clientX-bbox.left*(cw/bbox.width);
   var pxY=e.touches[0].clientY-bbox.top*(ch/bbox.height);
   
+  var shape;
   for (let i=0; i<3; i++) {
    shape=shapes[i];
-   if ((shape.x-pxX)**2+(shape.y-pxY)**2<=shape.radius**2) {
+   if ((shape.x-pxX)**2+(shape.y-pxY)**2<=shape.radius**2 && shape.move==true) {
     mouseX=pxX;
     mouseY=pxY;
     dragging=true;
@@ -201,7 +202,8 @@ function layout(angles, shapes) {
   var pxX=e.clientX-bbox.left*(cw/bbox.width);
   var pxY=e.clientY-bbox.top*(ch/bbox.height);
 
-  if (dragging==true && (shape.x-pxX)**2+(shape.y-pxY)**2<=shape.radius**2) {
+  var shape=shapes[selectedShape];
+  if (dragging==true && (shape.x-pxX)**2+(shape.y-pxY)**2<=shape.radius**2 && shape.move==true) {
    var dA=(Math.atan2(mouseY-cY,mouseX-cX)-Math.atan2(pxY-cY,pxX-cX))*180/Math.PI;
    angles[selectedShape] -= dA;
 
@@ -222,7 +224,7 @@ function layout(angles, shapes) {
   var pxX=e.touches[0].clientX-bbox.left*(cw/bbox.width);
   var pxY=e.touches[0].clientY-bbox.top*(ch/bbox.height);
 
-  if (dragging==true && (shape.x-pxX)**2+(shape.y-pxY)**2<=shape.radius**2) {
+  if (dragging==true && (shape.x-pxX)**2+(shape.y-pxY)**2<=shape.radius**2 && shape.move==true) {
    var dA=(Math.atan2(mouseY-cY,mouseX-cX)-Math.atan2(pxY-cY,pxX-cX))*180/Math.PI;
    angles[selectedShape] -= dA;
 
